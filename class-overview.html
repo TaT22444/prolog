@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロログ - クラス概要</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-turquoise: #4ECDC4;
+            --primary-cyan: #45B7D1;
+            --primary-light: #96D0CE;
+            --primary-dark: #319795;
+            --neutral-900: #1A202C;
+            --neutral-800: #2D3748;
+            --neutral-700: #4A5568;
+            --neutral-600: #718096;
+            --neutral-500: #A0AEC0;
+            --neutral-400: #CBD5E0;
+            --neutral-300: #E2E8F0;
+            --neutral-200: #EDF2F7;
+            --neutral-100: #F7FAFC;
+            --neutral-50: #FAFBFC;
+            --radius-full: 50px;
+            --radius-xl: 16px;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --radius-sm: 6px;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.03);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--neutral-50);
+            color: var(--neutral-800);
+            line-height: 1.6;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--neutral-50);
+            margin-left: 280px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--primary-turquoise) 0%, var(--primary-cyan) 100%);
+            color: white;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-xl);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: white;
+            text-align: left;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .student-list {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding-left: 0px;
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: transparent;
+            border: none;
+        }
+
+        .student-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .student-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .student-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+            flex-shrink: 0;
+            color: var(--primary-turquoise);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 1px;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .student-status {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        .nav-menu {
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: rgba(255, 255, 255, 0.9);
+            background: transparent;
+            border: none;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-icon {
+            font-size: 14px;
+            margin-right: 10px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .nav-text {
+            font-size: 13px;
+            letter-spacing: 0.2px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 12px;
+            flex-shrink: 0;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-full);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-right: 10px;
+            color: var(--primary-turquoise);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 1px;
+            color: white;
+        }
+
+        .profile-info p {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            flex: 1;
+            background: var(--neutral-50);
+            padding: 20px;
+            position: relative;
+        }
+
+        .dashboard-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(250, 251, 252, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .period-selector {
+            padding: 8px 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            background: white;
+            font-size: 14px;
+            color: var(--neutral-700);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .period-selector:hover {
+            border-color: var(--primary-turquoise);
+        }
+
+        .dashboard-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Overview Cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .overview-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.2s ease;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .overview-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-light);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .overview-info h3 {
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 4px;
+        }
+
+        .overview-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+
+        /* Analysis Grid */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--neutral-600);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Guidance Points */
+        .guidance-points {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .guidance-point {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: var(--neutral-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--neutral-200);
+        }
+
+        .point-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .point-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .point-content p {
+            font-size: 13px;
+            color: var(--neutral-600);
+            line-height: 1.5;
+        }
+
+        /* Achievement List */
+        .achievement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .achievement-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: var(--neutral-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--neutral-200);
+        }
+
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .achievement-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .achievement-content p {
+            font-size: 13px;
+            color: var(--neutral-600);
+            line-height: 1.5;
+        }
+
+        /* Chart Containers */
+        .analysis-card .card-content {
+            position: relative;
+            min-height: 350px;
+        }
+        
+        .analysis-card .card-content:has(canvas) {
+            height: 350px;
+        }
+        
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="app-title">プロログ</h1>
+            
+            <div class="student-list">
+                <h3 class="section-title">児童一覧</h3>
+                <div class="student-item">
+                    <div class="student-avatar">さ</div>
+                    <div class="student-info">
+                        <div class="student-name">佐藤 さとう</div>
+                        <div class="student-status">順調に進行中</div>
+                    </div>
+                </div>
+                <div class="student-item">
+                    <div class="student-avatar">あ</div>
+                    <div class="student-info">
+                        <div class="student-name">鈴木 あお</div>
+                        <div class="student-status">要注意・サポート必要</div>
+                    </div>
+                </div>
+                <div class="student-item">
+                    <div class="student-avatar">り</div>
+                    <div class="student-info">
+                        <div class="student-name">田中 りく</div>
+                        <div class="student-status">優秀・先取り学習</div>
+                    </div>
+                </div>
+                <div class="student-item">
+                    <div class="student-avatar">み</div>
+                    <div class="student-info">
+                        <div class="student-name">渡辺 みお</div>
+                        <div class="student-status">順調に進行中</div>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="class-overview.html" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">ダッシュボード</span>
+                </a>
+                <a href="tasks.html" class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">課題管理</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="profile-section">
+                    <div class="profile-avatar">👩‍🏫</div>
+                    <div class="profile-info">
+                        <h4>山田 先生</h4>
+                        <p>3年2組</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2 class="page-title">クラス分析</h2>
+                <div class="header-actions">
+                    <select class="period-selector">
+                        <option>今週</option>
+                        <option>今月</option>
+                        <option>今学期</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Overview Cards -->
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="overview-icon">👥</div>
+                        <div class="overview-info">
+                            <h3>クラス人数</h3>
+                            <div class="overview-value">30人</div>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon">📈</div>
+                        <div class="overview-info">
+                            <h3>平均理解度</h3>
+                            <div class="overview-value">75%</div>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon">✨</div>
+                        <div class="overview-info">
+                            <h3>学習達成度</h3>
+                            <div class="overview-value">82%</div>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon">💡</div>
+                        <div class="overview-info">
+                            <h3>要支援児童</h3>
+                            <div class="overview-value">3名</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Grid -->
+                <div class="analysis-grid">
+                    <!-- 思考傾向分析 -->
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <h3>思考傾向分析</h3>
+                            <p class="card-subtitle">クラス全体の思考プロセスの特徴</p>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="thinkingChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 学習スタイル分布 -->
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <h3>学習スタイル分布</h3>
+                            <p class="card-subtitle">児童の学習アプローチの傾向</p>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="learningStyleChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 指導方針サマリー -->
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <h3>指導方針サマリー</h3>
+                            <p class="card-subtitle">データに基づく推奨アプローチ</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="guidance-points">
+                                <div class="guidance-point">
+                                    <div class="point-icon">🎯</div>
+                                    <div class="point-content">
+                                        <h4>個別対応の強化</h4>
+                                        <p>5名の児童が特定の分野で追加サポートを必要としています。個別指導時間の確保を推奨します。</p>
+                                    </div>
+                                </div>
+                                <div class="guidance-point">
+                                    <div class="point-icon">🤝</div>
+                                    <div class="point-content">
+                                        <h4>グループ学習の促進</h4>
+                                        <p>協働学習への積極的な参加が見られます。ペア学習やグループ活動を通じた学び合いの機会を増やすことを推奨します。</p>
+                                    </div>
+                                </div>
+                                <div class="guidance-point">
+                                    <div class="point-icon">💭</div>
+                                    <div class="point-content">
+                                        <h4>思考プロセスの可視化</h4>
+                                        <p>児童の多くが視覚的な学習ツールを効果的に活用しています。思考マップなどの視覚的ツールの活用を推奨します。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 最近の成果 -->
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <h3>最近の成果</h3>
+                            <p class="card-subtitle">クラス全体の進歩と達成</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="achievement-list">
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">🌟</div>
+                                    <div class="achievement-content">
+                                        <h4>図工での創造性の向上</h4>
+                                        <p>85%の児童が独自の表現方法を見出し、作品に個性を反映できるようになりました。</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">📚</div>
+                                    <div class="achievement-content">
+                                        <h4>読解力の成長</h4>
+                                        <p>文章の要点把握能力が全体的に向上し、特に説明文の理解度が20%改善しました。</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">🤝</div>
+                                    <div class="achievement-content">
+                                        <h4>協働学習の活性化</h4>
+                                        <p>グループ活動での積極的な意見交換が増加し、相互理解が深まっています。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 児童クリック時の遷移処理
+        document.addEventListener('DOMContentLoaded', function() {
+            const studentItems = document.querySelectorAll('.student-item');
+            studentItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // 全ての児童アイテムからactiveクラスを削除
+                    studentItems.forEach(s => s.classList.remove('active'));
+                    // クリックされた児童にactiveクラスを追加
+                    this.classList.add('active');
+                    // dashboard.htmlに遷移
+                    window.location.href = 'dashboard.html';
+                });
+            });
+        });
+
+        // 思考傾向分析チャート
+        const thinkingCtx = document.getElementById('thinkingChart').getContext('2d');
+        new Chart(thinkingCtx, {
+            type: 'radar',
+            data: {
+                labels: ['論理的思考', '創造的思考', '批判的思考', '問題解決力', '協働的思考'],
+                datasets: [{
+                    label: 'クラス平均',
+                    data: [75, 82, 68, 73, 85],
+                    backgroundColor: 'rgba(78, 205, 196, 0.2)',
+                    borderColor: 'rgba(78, 205, 196, 1)',
+                    pointBackgroundColor: 'rgba(78, 205, 196, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(78, 205, 196, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 学習スタイル分布チャート
+        const learningStyleCtx = document.getElementById('learningStyleChart').getContext('2d');
+        new Chart(learningStyleCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['視覚的学習', '聴覚的学習', '体験的学習', '読み書き型'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: [
+                        'rgba(78, 205, 196, 0.8)',
+                        'rgba(69, 183, 209, 0.8)',
+                        'rgba(150, 208, 206, 0.8)',
+                        'rgba(49, 151, 149, 0.8)'
+                    ],
+                    borderColor: 'white',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
