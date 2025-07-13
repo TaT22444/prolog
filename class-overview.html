@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>プロログ - クラス概要</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary-turquoise: #4ECDC4;
@@ -459,19 +458,365 @@
             line-height: 1.5;
         }
 
-        /* Chart Containers */
-        .analysis-card .card-content {
+        /* Character Growth Section */
+        .character-growth-section {
+            margin-bottom: 24px;
+        }
+
+        .character-growth-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--neutral-200);
+        }
+
+        .section-header {
+            /* text-align: center; */
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 40px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--neutral-600);
+        }
+
+        .character-content {
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+        }
+
+        /* Character Display Left */
+        .character-display-left {
+            flex: 0 0 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .character-container {
             position: relative;
-            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
         }
-        
-        .analysis-card .card-content:has(canvas) {
-            height: 350px;
+
+        .character-container::after {
+            content: '';
+            position: absolute;
+            bottom: -24px;
+            left: 40%;
+            transform: translateX(-42%);
+            width: 120px;
+            height: 20px;
+            background: radial-gradient(ellipse, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 80%, transparent 100%);
+            border-radius: 50%;
+            z-index: 1;
         }
-        
-        canvas {
-            width: 100% !important;
-            height: 100% !important;
+
+        .character-image {
+            width: 160px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        .character-status {
+            background: var(--neutral-100);
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .status-label {
+            font-size: 11px;
+            color: var(--neutral-600);
+            margin-bottom: 4px;
+        }
+
+        .status-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+
+        /* Character Info Right */
+        .character-info-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Process Analysis Section */
+        .process-analysis {
+            background: var(--neutral-50);
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        .analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .analysis-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+
+        .analysis-period {
+            font-size: 12px;
+            color: var(--neutral-600);
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        .thinking-patterns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .pattern-item {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .pattern-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pattern-item.strong {
+            border-color: var(--primary-turquoise);
+            background: rgba(78, 205, 196, 0.02);
+        }
+
+        .pattern-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .pattern-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+
+        .pattern-strength {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .pattern-strength.strong {
+            background: rgba(78, 205, 196, 0.1);
+            color: var(--primary-dark);
+        }
+
+        .pattern-strength.medium {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+        }
+
+        .pattern-strength.weak {
+            background: var(--neutral-100);
+            color: var(--neutral-500);
+        }
+
+        .pattern-description {
+            font-size: 12px;
+            line-height: 1.4;
+            color: var(--neutral-600);
+        }
+
+        /* Growth Timeline */
+        .growth-timeline {
+            border-top: 1px solid var(--neutral-200);
+            padding-top: 20px;
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 12px;
+        }
+
+        .timeline-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: var(--neutral-600);
+            font-weight: 500;
+            min-width: 40px;
+        }
+
+        .timeline-event {
+            font-size: 13px;
+            color: var(--neutral-900);
+            flex: 1;
+        }
+
+        .timeline-insight {
+            font-size: 11px;
+            color: var(--neutral-600);
+            background: var(--neutral-50);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        /* Teaching Insights */
+        .teaching-insights {
+            background: var(--neutral-50);
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        .insights-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 16px;
+        }
+
+        .insight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .insight-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+        }
+
+        .insight-priority {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            min-width: 32px;
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .insight-priority.high {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .insight-priority.medium {
+            background: rgba(255, 165, 0, 0.1);
+            color: #ffa500;
+        }
+
+        .insight-priority.low {
+            background: var(--neutral-100);
+            color: var(--neutral-600);
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-text {
+            font-size: 13px;
+            color: var(--neutral-900);
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .insight-action {
+            font-size: 11px;
+            color: var(--neutral-600);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .character-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .character-display-left {
+                flex: none;
+            }
+
+            .thinking-patterns {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+
+
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.7;
+                transform: scale(1.2);
+            }
         }
     </style>
 </head>
@@ -581,29 +926,142 @@
                     </div>
                 </div>
 
-                <!-- Analysis Grid -->
-                <div class="analysis-grid">
-                    <!-- 思考傾向分析 -->
-                    <div class="analysis-card">
-                        <div class="card-header">
-                            <h3>思考傾向分析</h3>
-                            <p class="card-subtitle">クラス全体の思考プロセスの特徴</p>
+                <!-- Character & Growth Section -->
+                <div class="character-growth-section">
+                    <div class="character-growth-card">
+                        <div class="section-header">
+                            <h2>3年2組のキャラクター(青くん)</h2>
                         </div>
-                        <div class="card-content">
-                            <canvas id="thinkingChart"></canvas>
+                        
+                        <div class="character-content">
+                            <!-- Character Display -->
+                            <div class="character-display-left">
+                                <div class="character-container">
+                                    <img src="青くん.png" alt="青くん" class="character-image">
+                                </div>
+                                <div class="character-status">
+                                    <div class="status-label">クラス活動量</div>
+                                    <div class="status-value">活発</div>
                         </div>
                     </div>
 
-                    <!-- 学習スタイル分布 -->
-                    <div class="analysis-card">
-                        <div class="card-header">
-                            <h3>学習スタイル分布</h3>
-                            <p class="card-subtitle">児童の学習アプローチの傾向</p>
+                            <!-- Growth & Color Info -->
+                            <div class="character-info-right">
+                                <div class="process-analysis">
+                                    <div class="analysis-header">
+                                        <h3 class="analysis-title">クラス全体の思考傾向</h3>
+                                        <div class="analysis-period">今週</div>
                         </div>
-                        <div class="card-content">
-                            <canvas id="learningStyleChart"></canvas>
+                                    <div class="thinking-patterns">
+                                        <div class="pattern-item strong">
+                                            <div class="pattern-header">
+                                                <h4 class="pattern-name">やる気・情熱</h4>
+                                                <span class="pattern-strength strong">強</span>
+                                            </div>
+                                            <p class="pattern-description">クラス全体で課題への取り組み意欲が高く、青くんの体に赤い色として現れています。</p>
+                                        </div>
+                                        <div class="pattern-item">
+                                            <div class="pattern-header">
+                                                <h4 class="pattern-name">ひらめき・ポジティブ</h4>
+                                                <span class="pattern-strength medium">中</span>
+                                            </div>
+                                            <p class="pattern-description">創造的なアイデアや前向きな発言が多く見られ、青くんにオレンジ色のグラデーションが現れています。</p>
+                                        </div>
+                                        <div class="pattern-item">
+                                            <div class="pattern-header">
+                                                <h4 class="pattern-name">論理的・観察力</h4>
+                                                <span class="pattern-strength medium">中</span>
+                                            </div>
+                                            <p class="pattern-description">問題解決時の筋道立てた思考が増えており、青くんに青色の要素が見え始めています。</p>
+                                        </div>
+                                        <div class="pattern-item weak">
+                                            <div class="pattern-header">
+                                                <h4 class="pattern-name">独自性</h4>
+                                                <span class="pattern-strength weak">弱</span>
+                                            </div>
+                                            <p class="pattern-description">まだ個性的なアプローチは少なく、紫色の発現には時間がかかりそうです。</p>
+                                        </div>
+                                        <div class="pattern-item weak">
+                                            <div class="pattern-header">
+                                                <h4 class="pattern-name">集中力・知的</h4>
+                                                <span class="pattern-strength weak">弱</span>
+                                            </div>
+                                            <p class="pattern-description">深い思考への集中がまだ課題で、緑色の要素は今後の成長に期待です。</p>
+                                        </div>
+                                        <div class="pattern-item weak">
+                                            <div class="pattern-header">
+                                                <h4 class="pattern-name">苦手克服・向上心</h4>
+                                                <span class="pattern-strength weak">弱</span>
+                                            </div>
+                                            <p class="pattern-description">困難な課題への挑戦はまだ少なく、ピンク色のアイテムが現れるまでもう少しです。</p>
+                                        </div>
                         </div>
                     </div>
+
+                                <div class="growth-timeline">
+                                    <h3 class="timeline-title">青くんの成長の軌跡</h3>
+                                    <div class="timeline-items">
+                                        <div class="timeline-item">
+                                            <div class="timeline-date">4月</div>
+                                            <div class="timeline-event">青くん誕生（卵から孵化）</div>
+                                            <div class="timeline-insight">クラスの「ぷろ助」使用開始、学習活動がスタート</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-date">5月</div>
+                                            <div class="timeline-event">手足の発達</div>
+                                            <div class="timeline-insight">クラス全体の学習活動量が増加、青くんに手足が現れる</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-date">6月</div>
+                                            <div class="timeline-event">赤色のグラデーション出現</div>
+                                            <div class="timeline-insight">やる気・情熱が最も強い傾向として青くんの体に色づく</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-date">7月</div>
+                                            <div class="timeline-event">オレンジ色の帽子を獲得</div>
+                                            <div class="timeline-insight">ひらめき・ポジティブ傾向が4番目に強くなり、アイテムとして出現</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-date">8月</div>
+                                            <div class="timeline-event">青色の要素が発達中</div>
+                                            <div class="timeline-insight">論理的思考の活動が増え、3番目の色として現れる予兆</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="teaching-insights">
+                                    <h3 class="insights-title">クラス全体への指導方針</h3>
+                                    <div class="insight-list">
+                                        <div class="insight-item">
+                                            <div class="insight-priority high">高</div>
+                                            <div class="insight-content">
+                                                <p class="insight-text">やる気・情熱が非常に高い一方で、独自性や集中力・知的な側面が弱い傾向にあります。</p>
+                                                <p class="insight-action">この意欲を活かして、論理的思考や創造性を育む活動（プロジェクト学習、発表機会の増加）を重点的に実施することを推奨します。</p>
+                                            </div>
+                                        </div>
+                                        <div class="insight-item">
+                                            <div class="insight-priority medium">中</div>
+                                            <div class="insight-content">
+                                                <p class="insight-text">ひらめき・ポジティブ傾向が中程度で、論理的思考も伸びつつあります。</p>
+                                                <p class="insight-action">この成長を促進するため、グループディスカッションや問題解決型の学習を増やし、青くんの3番目の色（青色）の発現を目指しましょう。</p>
+                                            </div>
+                                        </div>
+                                        <div class="insight-item">
+                                            <div class="insight-priority low">低</div>
+                                            <div class="insight-content">
+                                                <p class="insight-text">苦手克服・向上心がまだ低く、困難な課題への挑戦が少ない状況です。</p>
+                                                <p class="insight-action">小さな成功体験を積み重ねながら、徐々に挑戦レベルを上げ、ピンク色のアイテム獲得に向けて支援しましょう。</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Grid -->
+                <div class="analysis-grid">
 
                     <!-- 指導方針サマリー -->
                     <div class="analysis-card">
@@ -691,76 +1149,55 @@
             });
         });
 
-        // 思考傾向分析チャート
-        const thinkingCtx = document.getElementById('thinkingChart').getContext('2d');
-        new Chart(thinkingCtx, {
-            type: 'radar',
-            data: {
-                labels: ['論理的思考', '創造的思考', '批判的思考', '問題解決力', '協働的思考'],
-                datasets: [{
-                    label: 'クラス平均',
-                    data: [75, 82, 68, 73, 85],
-                    backgroundColor: 'rgba(78, 205, 196, 0.2)',
-                    borderColor: 'rgba(78, 205, 196, 1)',
-                    pointBackgroundColor: 'rgba(78, 205, 196, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(78, 205, 196, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            stepSize: 20
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
+        // プロセス分析とインサイト表示
+        document.addEventListener('DOMContentLoaded', function() {
+            // 思考パターン項目のインタラクション
+            const patternItems = document.querySelectorAll('.pattern-item');
+            patternItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const patternName = this.querySelector('.pattern-name').textContent;
+                    const patternStrength = this.querySelector('.pattern-strength').textContent;
+                    console.log(`${patternName}: ${patternStrength}レベル`);
+                    
+                    // 詳細分析の表示（今後実装）
+                    // showDetailedAnalysis(patternName);
+                });
+            });
 
-        // 学習スタイル分布チャート
-        const learningStyleCtx = document.getElementById('learningStyleChart').getContext('2d');
-        new Chart(learningStyleCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['視覚的学習', '聴覚的学習', '体験的学習', '読み書き型'],
-                datasets: [{
-                    data: [40, 25, 20, 15],
-                    backgroundColor: [
-                        'rgba(78, 205, 196, 0.8)',
-                        'rgba(69, 183, 209, 0.8)',
-                        'rgba(150, 208, 206, 0.8)',
-                        'rgba(49, 151, 149, 0.8)'
-                    ],
-                    borderColor: 'white',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            font: {
-                                size: 12
-                            }
-                        }
-                    }
+            // タイムライン項目のインタラクション
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const event = this.querySelector('.timeline-event').textContent;
+                    const insight = this.querySelector('.timeline-insight').textContent;
+                    console.log(`イベント: ${event}, インサイト: ${insight}`);
+                });
+            });
+
+            // 指導ヒント項目のインタラクション
+            const insightItems = document.querySelectorAll('.insight-item');
+            insightItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const priority = this.querySelector('.insight-priority').textContent;
+                    const text = this.querySelector('.insight-text').textContent;
+                    console.log(`優先度: ${priority}, 内容: ${text}`);
+                });
+            });
+
+            // レスポンシブ対応
+            function handleResize() {
+                const characterContent = document.querySelector('.character-content');
+                if (characterContent && window.innerWidth < 768) {
+                    characterContent.style.flexDirection = 'column';
+                    characterContent.style.gap = '20px';
+                } else if (characterContent) {
+                    characterContent.style.flexDirection = 'row';
+                    characterContent.style.gap = '32px';
                 }
             }
+
+            window.addEventListener('resize', handleResize);
+            handleResize(); // 初期化時に実行
         });
     </script>
 </body>

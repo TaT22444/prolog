@@ -413,24 +413,25 @@
             padding: 24px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--neutral-200);
+            margin-bottom: 24px;
         }
 
         .flow-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
             gap: 12px;
+            margin-bottom: 20px;
         }
 
         .flow-icon {
             width: 40px;
             height: 40px;
+            background: linear-gradient(135deg, var(--primary-turquoise), var(--primary-cyan));
             border-radius: var(--radius-lg);
-            background: var(--primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
             color: white;
             box-shadow: var(--shadow-sm);
         }
@@ -438,16 +439,35 @@
         .flow-title {
             font-size: 18px;
             font-weight: 700;
-            color: var(--neutral-800);
+            color: var(--neutral-900);
             line-height: 1.3;
         }
 
         .flow-timeline {
             display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin-bottom: 24px;
             overflow-x: auto;
-            padding-bottom: 8px;
+            padding: 8px 0 16px 0; /* 上部パディングを追加してhover時の見切れを防止 */
+            margin-top: 8px; /* 追加のマージン */
+        }
+
+        .flow-timeline::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .flow-timeline::-webkit-scrollbar-track {
+            background: var(--neutral-100);
+            border-radius: 3px;
+        }
+
+        .flow-timeline::-webkit-scrollbar-thumb {
+            background: var(--neutral-300);
+            border-radius: 3px;
+        }
+
+        .flow-timeline::-webkit-scrollbar-thumb:hover {
+            background: var(--neutral-400);
         }
 
         .flow-point {
@@ -459,7 +479,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            min-width: 120px;
+            min-width: 140px; /* 幅を少し拡張 */
             position: relative;
             box-shadow: var(--shadow-xs);
             cursor: pointer;
@@ -468,7 +488,7 @@
         }
 
         .flow-point:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px); /* 少し大きく動かす */
             box-shadow: var(--shadow-md);
             opacity: 1;
         }
@@ -529,7 +549,7 @@
             border-width: 2px;
             box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.15), var(--shadow-lg);
             opacity: 1;
-            transform: translateY(-2px);
+            transform: translateY(-4px); /* hover時と同じ値に調整 */
         }
 
         @keyframes pulse {
@@ -583,6 +603,45 @@
             color: var(--neutral-500);
             font-weight: 400;
             line-height: 1.3;
+            margin-bottom: 6px; /* 思考状況のスペースを確保 */
+        }
+
+        /* 思考状況の表示 */
+        .flow-thinking-status {
+            font-size: 9px;
+            color: var(--neutral-700);
+            background: var(--neutral-100);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 500;
+            line-height: 1.2;
+            white-space: nowrap;
+            margin-top: 4px;
+        }
+
+        .flow-thinking-status.struggling {
+            background: rgba(255, 107, 107, 0.1);
+            color: #d73027;
+        }
+
+        .flow-thinking-status.engaged {
+            background: rgba(78, 205, 196, 0.1);
+            color: var(--primary-dark);
+        }
+
+        .flow-thinking-status.exploring {
+            background: rgba(255, 165, 0, 0.1);
+            color: #e67e00;
+        }
+
+        .flow-thinking-status.confident {
+            background: rgba(46, 213, 115, 0.1);
+            color: #27ae60;
+        }
+
+        .flow-thinking-status.reflecting {
+            background: rgba(155, 89, 182, 0.1);
+            color: #8e44ad;
         }
 
         /* Selected Flow Details */
@@ -885,7 +944,7 @@
                 <div class="assignment-flow-section">
                     <div class="flow-header">
                         <div class="flow-icon">🎨</div>
-                        <h3 class="flow-title">図工の授業 - 「季節の風景を描こう」プロジェクト</h3>
+                        <h3 class="flow-title">図工の授業 - 「季節の風景を描こう」</h3>
                     </div>
                     
                     <div class="flow-timeline">
@@ -893,16 +952,19 @@
                             <div class="flow-number completed">1</div>
                             <div class="flow-point-title">Week 1</div>
                             <div class="flow-description">観察とスケッチ</div>
+                            <div class="flow-thinking-status confident">細部まで観察できた</div>
                         </div>
                         <div class="flow-point completed" data-flow="2">
                             <div class="flow-number completed">2</div>
                             <div class="flow-point-title">Week 2</div>
                             <div class="flow-description">色彩の学習</div>
+                            <div class="flow-thinking-status confident">色の違いを発見した</div>
                         </div>
                         <div class="flow-point current selected" data-flow="3">
                             <div class="flow-number current">3</div>
                             <div class="flow-point-title">Week 3</div>
                             <div class="flow-description">下絵制作</div>
+                            <div class="flow-thinking-status struggling">構図を何度も考え直す</div>
                         </div>
                         <div class="flow-point pending" data-flow="4">
                             <div class="flow-number pending">4</div>
@@ -1046,6 +1108,40 @@
                      }
                  ];
 
+                // 思考状況のパターンを定義（学習プロセスの具体的な状況を表現）
+                const thinkingPatterns = [
+                    {
+                        completed: { text: "細部まで観察できた", type: "confident" },
+                        current: { text: "じっくり観察中", type: "engaged" },
+                        pending: { text: "何を観察しようか", type: "reflecting" }
+                    },
+                    {
+                        completed: { text: "色の違いを発見した", type: "confident" },
+                        current: { text: "色を混ぜて実験中", type: "exploring" },
+                        pending: { text: "色のことが気になる", type: "reflecting" }
+                    },
+                    {
+                        completed: { text: "納得いく構図になった", type: "confident" },
+                        current: { text: "構図を何度も考え直す", type: "struggling" },
+                        pending: { text: "どう描こうか想像中", type: "reflecting" }
+                    },
+                    {
+                        completed: { text: "色選びに工夫を凝らした", type: "confident" },
+                        current: { text: "色選びに迷っている", type: "struggling" },
+                        pending: { text: "どんな色にしようか", type: "exploring" }
+                    },
+                    {
+                        completed: { text: "細部にこだわり抜いた", type: "confident" },
+                        current: { text: "完成度を高めている", type: "engaged" },
+                        pending: { text: "仕上げが楽しみ", type: "exploring" }
+                    },
+                    {
+                        completed: { text: "堂々と発表できた", type: "confident" },
+                        current: { text: "発表の準備をしている", type: "engaged" },
+                        pending: { text: "発表がドキドキ", type: "reflecting" }
+                    }
+                ];
+
                 task.weeks.forEach((week, index) => {
                     const weekNumber = index + 1;
                     const now = new Date();
@@ -1083,13 +1179,18 @@
                          }
                      }
 
+                     // 思考状況を取得
+                     const thinkingPattern = thinkingPatterns[index] || thinkingPatterns[0];
+                     const thinking = thinkingPattern[status];
+
                      flowData[weekNumber] = {
                          title: `Week ${weekNumber} - ${week}`,
                          image: defaultImages[index] || '📝',
                          caption: caption,
                          progress: progress,
                          status: status,
-                         stats: this.generateWeekStats(status)
+                         stats: this.generateWeekStats(status),
+                         thinking: thinking
                      };
                 });
 
@@ -1136,7 +1237,7 @@
                          'science': '理科',
                          'social': '社会'
                      };
-                     flowTitle.textContent = `${subjectNames[task.subject] || '図工'}の授業 - 「${task.title}」プロジェクト`;
+                     flowTitle.textContent = `${subjectNames[task.subject] || '図工'}の授業 - 「${task.title}」`;
                  }
 
                  // フローポイントを更新
@@ -1159,6 +1260,7 @@
                              <div class="flow-number ${data.status}">${weekNumber}</div>
                              <div class="flow-point-title">Week ${weekNumber}</div>
                              <div class="flow-description">${week}</div>
+                             ${data.status !== 'pending' ? `<div class="flow-thinking-status ${data.thinking.type}">${data.thinking.text}</div>` : ''}
                          `;
                          
                          // クリックイベントリスナーを追加
