@@ -786,7 +786,7 @@
             text-align: center;
         }
 
-        .progress-stats {
+        .thinking-description {
             background: white;
             padding: 20px;
             border-radius: var(--radius-lg);
@@ -794,28 +794,11 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--neutral-200);
-        }
-
-        .stat-item:last-child {
-            border-bottom: none;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--neutral-600);
-            font-weight: 500;
-        }
-
-        .stat-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--neutral-800);
+        .thinking-text {
+            font-size: 14px;
+            color: var(--neutral-700);
+            line-height: 1.6;
+            margin: 0;
         }
     </style>
 </head>
@@ -991,9 +974,8 @@
                         <div class="selected-flow-content">
                             <div class="flow-image-section">
                                 <div class="flow-image" id="selected-image">
-                                    <div class="flow-image-content">✏️</div>
+                                    <img src="process.png" alt="プロセス画像" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl);">
                                 </div>
-                                <div class="image-caption" id="selected-caption">佐藤さんは観察したスケッチを基に、画用紙に丁寧に下絵を描いています。構図を考えながら、細部まで気を配って制作に取り組んでいます。</div>
                             </div>
                             <div class="flow-progress-section">
                                 <div class="progress-summary">
@@ -1003,19 +985,9 @@
                                     </div>
                                     <span class="progress-percentage" id="selected-percentage">70%</span>
                                 </div>
-                                <div class="progress-stats" id="selected-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-label">構図力</div>
-                                        <div class="stat-value">85%</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-label">観察力</div>
-                                        <div class="stat-value">90%</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-label">集中力</div>
-                                        <div class="stat-value">80%</div>
-                                    </div>
+                                <div class="image-caption" id="selected-caption"></div>
+                                <div class="thinking-description" id="selected-thinking">
+                                    <p class="thinking-text"></p>
                                 </div>
                             </div>
                         </div>
@@ -1189,7 +1161,7 @@
                          caption: caption,
                          progress: progress,
                          status: status,
-                         stats: this.generateWeekStats(status),
+                         thinkingDescription: this.generateWeekThinkingDescription(status, weekNumber),
                          thinking: thinking
                      };
                 });
@@ -1197,26 +1169,20 @@
                 return flowData;
             }
 
-            // 週の統計データを生成
-            generateWeekStats(status) {
+            // 週の思考状況を生成
+            generateWeekThinkingDescription(status, week) {
                 if (status === 'completed') {
-                    return [
-                        { label: "理解度", value: "95%" },
-                        { label: "技能", value: "90%" },
-                        { label: "意欲", value: "100%" }
-                    ];
+                    if (week === 1) {
+                        return "佐藤さんは校庭の桜の木を丁寧に観察し、細部まで気を配ってスケッチを完成させました。花びらの形や枝の伸び方を正確に捉えることができています。";
+                    } else if (week === 2) {
+                        return "佐藤さんは色彩の学習で新しい発見をしました。色の混合実験を通じて、自然の色合いを再現する方法を見つけ出すことができました。";
+                    } else if (week === 3) {
+                        return "佐藤さんは構図について深く考え、何度も試行錯誤を重ねました。最終的に満足のいく構図を見つけ出し、自信を持って制作に取り組んでいます。";
+                    }
                 } else if (status === 'current') {
-                    return [
-                        { label: "構図力", value: "85%" },
-                        { label: "観察力", value: "90%" },
-                        { label: "集中力", value: "80%" }
-                    ];
+                    return "佐藤さんは現在、観察とスケッチの段階に集中して取り組んでいます。細部への注意深い観察力と、丁寧な線描きが光っています。";
                 } else {
-                    return [
-                        { label: "準備度", value: "0%" },
-                        { label: "理解度", value: "0%" },
-                        { label: "意欲", value: "0%" }
-                    ];
+                    return ""; // pending状態では思考状況を表示しない
                 }
             }
 
@@ -1368,18 +1334,12 @@
             document.getElementById('selected-progress').style.width = `${data.progress}%`;
             document.getElementById('selected-percentage').textContent = `${data.progress}%`;
             
-            // 統計情報を更新
-            const statsContainer = document.getElementById('selected-stats');
-            statsContainer.innerHTML = '';
-            data.stats.forEach(stat => {
-                const statItem = document.createElement('div');
-                statItem.className = 'stat-item';
-                statItem.innerHTML = `
-                    <div class="stat-label">${stat.label}</div>
-                    <div class="stat-value">${stat.value}</div>
-                `;
-                statsContainer.appendChild(statItem);
-            });
+            // 思考状況を更新
+            const thinkingContainer = document.getElementById('selected-thinking');
+            const thinkingText = thinkingContainer.querySelector('.thinking-text');
+            if (thinkingText) {
+                thinkingText.textContent = data.thinkingDescription;
+            }
         }
 
         // イベントリスナーを追加

@@ -818,6 +818,22 @@
                 transform: scale(1.2);
             }
         }
+
+        /* pattern-color-labelの色指定をCSSに追加 */
+        .pattern-color-label {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .pattern-color-label.orange { background: #FFA500; }
+        .pattern-color-label.yellow { background: #FFD700; }
+        .pattern-color-label.green { background: #4CAF50; }
+        .pattern-color-label.purple { background: #A259E6; }
+        .pattern-color-label.blue { background: #45B7D1; }
+        .pattern-color-label.pink { background: #FF8DA1; }
     </style>
 </head>
 <body>
@@ -955,6 +971,7 @@
                                     <div class="thinking-patterns">
                                         <div class="pattern-item strong">
                                             <div class="pattern-header">
+                                                <span class="pattern-color-label orange"></span>
                                                 <h4 class="pattern-name">やる気・情熱</h4>
                                                 <span class="pattern-strength strong">強</span>
                                             </div>
@@ -962,6 +979,7 @@
                                         </div>
                                         <div class="pattern-item">
                                             <div class="pattern-header">
+                                                <span class="pattern-color-label yellow"></span>
                                                 <h4 class="pattern-name">ひらめき・ポジティブ</h4>
                                                 <span class="pattern-strength medium">中</span>
                                             </div>
@@ -969,6 +987,7 @@
                                         </div>
                                         <div class="pattern-item">
                                             <div class="pattern-header">
+                                                <span class="pattern-color-label green"></span>
                                                 <h4 class="pattern-name">論理的・観察力</h4>
                                                 <span class="pattern-strength medium">中</span>
                                             </div>
@@ -976,6 +995,7 @@
                                         </div>
                                         <div class="pattern-item weak">
                                             <div class="pattern-header">
+                                                <span class="pattern-color-label purple"></span>
                                                 <h4 class="pattern-name">独自性</h4>
                                                 <span class="pattern-strength weak">弱</span>
                                             </div>
@@ -983,6 +1003,7 @@
                                         </div>
                                         <div class="pattern-item weak">
                                             <div class="pattern-header">
+                                                <span class="pattern-color-label blue"></span>
                                                 <h4 class="pattern-name">集中力・知的</h4>
                                                 <span class="pattern-strength weak">弱</span>
                                             </div>
@@ -990,6 +1011,7 @@
                                         </div>
                                         <div class="pattern-item weak">
                                             <div class="pattern-header">
+                                                <span class="pattern-color-label pink"></span>
                                                 <h4 class="pattern-name">苦手克服・向上心</h4>
                                                 <span class="pattern-strength weak">弱</span>
                                             </div>
